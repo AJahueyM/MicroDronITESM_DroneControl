@@ -91,9 +91,14 @@ DRONE_CTRL_MOTOR_OUTPUT DRONE_CTRL_GET_MOTOR_OUTPUT(){
     DRONE_CTRL_MOTOR_OUTPUT motorOutput;
 
     motorOutput.bottomLeft = yawRate * k - pitchRate * k - rollRate * k + thrust * k;
-    motorOutput.bottomRight = yawRate * k + pitchRate * k - rollRate * k - thrust * k;
-    motorOutput.topLeft = yawRate * k - pitchRate * k + rollRate * k - thrust * k;
+    motorOutput.bottomRight = (yawRate * k + pitchRate * k - rollRate * k - thrust * k) * -1;
+    motorOutput.topLeft = (yawRate * k - pitchRate * k + rollRate * k - thrust * k) * -1;
     motorOutput.topRight = yawRate * k + pitchRate * k + rollRate * k + thrust * k;
+    
+    motorOutput.bottomLeft = motorOutput.bottomLeft >= 0 ? motorOutput.bottomLeft : 0;
+    motorOutput.bottomRight = motorOutput.bottomRight >= 0 ? motorOutput.bottomRight : 0;
+    motorOutput.topLeft = motorOutput.topLeft >= 0 ? motorOutput.topLeft : 0;
+    motorOutput.topRight = motorOutput.topRight >= 0 ? motorOutput.topRight : 0;
 
     return motorOutput;
 }
