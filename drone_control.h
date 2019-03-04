@@ -5,13 +5,7 @@
 #include "PID/pitch_pid.h"
 #include "PID/height_pid.h"
 #include "drone_pose.h"
-
-typedef struct{
-    float bottomLeft;
-    float bottomRight;
-    float topRight;
-    float topLeft;
-} DRONE_CTRL_MOTOR_OUTPUT;
+#include "drone_motor_output.h"
 
 void DRONE_CTRL_INITIALIZE();
 
