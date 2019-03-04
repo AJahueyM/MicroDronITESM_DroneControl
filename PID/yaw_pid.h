@@ -8,6 +8,6 @@ void YAW_PID_SETPOINT(float setpoint);
 
 void YAW_PID_UPDATE(float source);
 
-int YAW_PID_GET_OUTPUT();
+float YAW_PID_GET_OUTPUT();
 
 #endif

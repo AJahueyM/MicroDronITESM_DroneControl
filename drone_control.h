@@ -1,9 +1,9 @@
 #ifndef _DRONE_CTRL_H
 #define _DRONE_CTRL_H
-#include "yaw_pid.h"
-#include "roll_pid.h"
-#include "pitch_pid.h"
-#include "height_pid.h"
+#include "PID/yaw_pid.h"
+#include "PID/roll_pid.h"
+#include "PID/pitch_pid.h"
+#include "PID/height_pid.h"
 #include "drone_pose.h"
 
 typedef struct{

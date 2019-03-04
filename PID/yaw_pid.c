@@ -23,7 +23,7 @@ void YAW_PID_SETPOINT(float setpoint){
 void YAW_PID_UPDATE(float source) {
     float error = yawPIDTarget - source;
     yawPIDErrorIntegral += error;
-    double derivativeError = error - yawPIDLastError;
+    float derivativeError = error - yawPIDLastError;
     yawPIDStatus.error = error;
     yawPIDStatus.errorChange = derivativeError;
     yawPIDStatus.errorIntegral = yawPIDErrorIntegral;
@@ -31,6 +31,6 @@ void YAW_PID_UPDATE(float source) {
     yawPIDLastError = error;
 }
 
-int YAW_PID_GET_OUTPUT(){
-    BASE_PID_GET_OUTPUT(yawPIDStatus, yawPIDConfig);
+float YAW_PID_GET_OUTPUT(){
+    return BASE_PID_GET_OUTPUT(yawPIDStatus, yawPIDConfig);
 }

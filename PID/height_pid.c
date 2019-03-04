@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "height_pid.h"
 PID_CONFIG heightPIDConfig;
 PID_STATUS heightPIDStatus;
@@ -23,7 +24,7 @@ void HEIGHT_PID_SETPOINT(float setpoint){
 void HEIGHT_PID_UPDATE(float source) {
     float error = heightPIDTarget - source;
     heightPIDErrorIntegral += error;
-    double derivativeError = error - heightPIDLastError;
+    float derivativeError = error - heightPIDLastError;
     heightPIDStatus.error = error;
     heightPIDStatus.errorChange = derivativeError;
     heightPIDStatus.errorIntegral = heightPIDErrorIntegral;
@@ -31,6 +32,6 @@ void HEIGHT_PID_UPDATE(float source) {
     heightPIDLastError = error;
 }
 
-int HEIGHT_PID_GET_OUTPUT(){
-    BASE_PID_GET_OUTPUT(heightPIDStatus, heightPIDConfig);
+float HEIGHT_PID_GET_OUTPUT(){
+    return BASE_PID_GET_OUTPUT(heightPIDStatus, heightPIDConfig);
 }

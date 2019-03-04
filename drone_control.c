@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "drone_control.h"
 PID_CONFIG yawPIDConfig;
 PID_CONFIG rollPIDConfig;
@@ -9,30 +10,27 @@ bool usingManualThrust = false;
 float currentManualThrust = 0;
 
 void DRONE_CTRL_INITIALIZE(){
-    yawPIDConfig.p = 0.5;
+    yawPIDConfig.p = 0.4;
     yawPIDConfig.i = 0.0;
-    yawPIDConfig.d = 0.5;
-    yawPIDConfig.clampled = true;
-    yawPIDConfig.min = 0.0;
-    yawPIDConfig.max = 1.0;
+    yawPIDConfig.d = 6.0;
+    heightPIDConfig.clampled = false;
 
-    rollPIDConfig.p = 0.5;
+
+    rollPIDConfig.p = 0.4;
     rollPIDConfig.i = 0.0;
-    rollPIDConfig.d = 0.5;
-    rollPIDConfig.clampled = true;
-    rollPIDConfig.min = 0.0;
-    rollPIDConfig.max = 1.0;
+    rollPIDConfig.d = 6.0;
+    heightPIDConfig.clampled = false;
 
-    pitchPIDConfig.p = 0.5;
+
+    pitchPIDConfig.p = 0.4;
     pitchPIDConfig.i = 0.0;
-    pitchPIDConfig.d = 0.5;
-    pitchPIDConfig.clampled = true;
-    pitchPIDConfig.min = 0.0;
-    pitchPIDConfig.max = 1.0;
+    pitchPIDConfig.d = 6.0;
+    heightPIDConfig.clampled = false;
 
-    heightPIDConfig.p = 0.5;
+
+    heightPIDConfig.p = 1.5;
     heightPIDConfig.i = 0.0;
-    heightPIDConfig.d = 0.5;
+    heightPIDConfig.d = 25.0;
     heightPIDConfig.clampled = true;
     heightPIDConfig.min = 0.0;
     heightPIDConfig.max = 1.0;
@@ -89,13 +87,13 @@ DRONE_CTRL_MOTOR_OUTPUT DRONE_CTRL_GET_MOTOR_OUTPUT(){
     float pitchRate = PITCH_PID_GET_OUTPUT();
     
     float thrust = usingManualThrust ? currentManualThrust : HEIGHT_PID_GET_OUTPUT();
-    
+
     DRONE_CTRL_MOTOR_OUTPUT motorOutput;
 
-    motorOutput.bottomLeft = yawRate * k - pitchRate * k + rollRate * k + thrust * k;
-    motorOutput.bottomRight = yawRate * k + pitchRate * k + rollRate * k - thrust * k;
-    motorOutput.topLeft = yawRate * k - pitchRate * k - rollRate * k - thrust * k;
-    motorOutput.topRight = yawRate * k + pitchRate * k - rollRate * k + thrust * k;
+    motorOutput.bottomLeft = yawRate * k - pitchRate * k - rollRate * k + thrust * k;
+    motorOutput.bottomRight = yawRate * k + pitchRate * k - rollRate * k - thrust * k;
+    motorOutput.topLeft = yawRate * k - pitchRate * k + rollRate * k - thrust * k;
+    motorOutput.topRight = yawRate * k + pitchRate * k + rollRate * k + thrust * k;
 
     return motorOutput;
 }

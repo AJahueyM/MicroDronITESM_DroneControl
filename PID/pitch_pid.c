@@ -23,7 +23,7 @@ void PITCH_PID_SETPOINT(float setpoint){
 void PITCH_PID_UPDATE(float source) {
     float error = pitchPIDTarget - source;
     pitchPIDErrorIntegral += error;
-    double derivativeError = error - pitchPIDLastError;
+    float derivativeError = error - pitchPIDLastError;
     pitchPIDStatus.error = error;
     pitchPIDStatus.errorChange = derivativeError;
     pitchPIDStatus.errorIntegral = pitchPIDErrorIntegral;
@@ -31,6 +31,6 @@ void PITCH_PID_UPDATE(float source) {
     pitchPIDLastError = error;
 }
 
-int PITCH_PID_GET_OUTPUT(){
-    BASE_PID_GET_OUTPUT(pitchPIDStatus, pitchPIDConfig);
+float PITCH_PID_GET_OUTPUT(){
+    return BASE_PID_GET_OUTPUT(pitchPIDStatus, pitchPIDConfig);
 }

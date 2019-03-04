@@ -8,6 +8,6 @@ void HEIGHT_PID_SETPOINT(float setpoint);
 
 void HEIGHT_PID_UPDATE(float source);
 
-int HEIGHT_PID_GET_OUTPUT();
+float HEIGHT_PID_GET_OUTPUT();
 
 #endif

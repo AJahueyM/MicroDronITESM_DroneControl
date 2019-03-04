@@ -8,6 +8,6 @@ void PITCH_PID_SETPOINT(float setpoint);
 
 void PITCH_PID_UPDATE(float source);
 
-int PITCH_PID_GET_OUTPUT();
+float PITCH_PID_GET_OUTPUT();
 
 #endif

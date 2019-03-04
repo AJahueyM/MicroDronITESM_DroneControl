@@ -8,6 +8,6 @@ void ROLL_PID_SETPOINT(float setpoint);
 
 void ROLL_PID_UPDATE(float source);
 
-int ROLL_PID_GET_OUTPUT();
+float ROLL_PID_GET_OUTPUT();
 
 #endif

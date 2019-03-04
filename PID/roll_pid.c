@@ -23,7 +23,7 @@ void ROLL_PID_SETPOINT(float setpoint){
 void ROLL_PID_UPDATE(float source) {
     float error = rollPIDTarget - source;
     rollPIDErrorIntegral += error;
-    double derivativeError = error - rollPIDLastError;
+    float derivativeError = error - rollPIDLastError;
     rollPIDStatus.error = error;
     rollPIDStatus.errorChange = derivativeError;
     rollPIDStatus.errorIntegral = rollPIDErrorIntegral;
@@ -31,6 +31,6 @@ void ROLL_PID_UPDATE(float source) {
     rollPIDLastError = error;
 }
 
-int ROLL_PID_GET_OUTPUT(){
-    BASE_PID_GET_OUTPUT(rollPIDStatus, rollPIDConfig);
+float ROLL_PID_GET_OUTPUT(){
+    return BASE_PID_GET_OUTPUT(rollPIDStatus, rollPIDConfig);
 }
