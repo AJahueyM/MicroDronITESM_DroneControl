@@ -10,27 +10,30 @@ bool usingManualThrust = false;
 float currentManualThrust = 0;
 
 void DRONE_CTRL_INITIALIZE(){
-    yawPIDConfig.p = 0.4;
+    yawPIDConfig.p = 0.05;
     yawPIDConfig.i = 0.0;
-    yawPIDConfig.d = 6.0;
-    heightPIDConfig.clampled = false;
+    yawPIDConfig.d = 0.0;
+    yawPIDConfig.clampled = true;
+    yawPIDConfig.min = -1.0;
+    yawPIDConfig.max = 1.0;
 
-
-    rollPIDConfig.p = 0.4;
+    rollPIDConfig.p = 0.1;
     rollPIDConfig.i = 0.0;
-    rollPIDConfig.d = 6.0;
-    heightPIDConfig.clampled = false;
+    rollPIDConfig.d = 0.0;
+    rollPIDConfig.clampled = true;
+    rollPIDConfig.min = -1.0;
+    rollPIDConfig.max = 1.0;
 
-
-    pitchPIDConfig.p = 0.4;
+    pitchPIDConfig.p = 0.1;
     pitchPIDConfig.i = 0.0;
-    pitchPIDConfig.d = 6.0;
-    heightPIDConfig.clampled = false;
+    pitchPIDConfig.d = 0.0;
+    pitchPIDConfig.clampled = true;
+    pitchPIDConfig.min = -1.0;
+    pitchPIDConfig.max = 1.0;
 
-
-    heightPIDConfig.p = 1.5;
+    heightPIDConfig.p = 1.0;
     heightPIDConfig.i = 0.0;
-    heightPIDConfig.d = 25.0;
+    heightPIDConfig.d = 0.0;
     heightPIDConfig.clampled = true;
     heightPIDConfig.min = 0.0;
     heightPIDConfig.max = 1.0;
@@ -100,8 +103,12 @@ DRONE_CTRL_MOTOR_OUTPUT DRONE_CTRL_GET_MOTOR_OUTPUT(){
     motorOutput.topLeft = motorOutput.topLeft >= 0 ? motorOutput.topLeft : 0;
     motorOutput.topRight = motorOutput.topRight >= 0 ? motorOutput.topRight : 0;
 
+    motorOutput.bottomLeft = motorOutput.bottomLeft > k ? k : motorOutput.bottomLeft;
+    motorOutput.bottomRight = motorOutput.bottomRight > k ? k : motorOutput.bottomRight;
+    motorOutput.topLeft = motorOutput.topLeft > k ? k : motorOutput.topLeft;
+    motorOutput.topRight = motorOutput.topRight > k ? k : motorOutput.topRight;
+    
     return motorOutput;
 }
-
 
 
