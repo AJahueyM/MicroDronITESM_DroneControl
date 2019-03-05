@@ -17,23 +17,23 @@ void DRONE_CTRL_INITIALIZE(){
     yawPIDConfig.min = -1.0;
     yawPIDConfig.max = 1.0;
 
-    rollPIDConfig.p = 0.1;
+    rollPIDConfig.p = 0.2;
     rollPIDConfig.i = 0.0;
-    rollPIDConfig.d = 0.0;
+    rollPIDConfig.d = 5.0;
     rollPIDConfig.clampled = true;
     rollPIDConfig.min = -1.0;
     rollPIDConfig.max = 1.0;
 
-    pitchPIDConfig.p = 0.1;
+    pitchPIDConfig.p = 0.2;
     pitchPIDConfig.i = 0.0;
-    pitchPIDConfig.d = 0.0;
+    pitchPIDConfig.d = 5.0;
     pitchPIDConfig.clampled = true;
     pitchPIDConfig.min = -1.0;
     pitchPIDConfig.max = 1.0;
 
-    heightPIDConfig.p = 1.0;
+    heightPIDConfig.p = 2.5;
     heightPIDConfig.i = 0.0;
-    heightPIDConfig.d = 0.0;
+    heightPIDConfig.d = 20.0;
     heightPIDConfig.clampled = true;
     heightPIDConfig.min = 0.0;
     heightPIDConfig.max = 1.0;
