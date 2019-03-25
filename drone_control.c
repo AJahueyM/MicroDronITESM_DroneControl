@@ -5,7 +5,7 @@ PID_CONFIG rollPIDConfig;
 PID_CONFIG pitchPIDConfig;
 PID_CONFIG heightPIDConfig;
 
-const float k = 5000;
+const float k = 200;
 bool usingManualThrust = false;
 float currentManualThrust = 0;
 
