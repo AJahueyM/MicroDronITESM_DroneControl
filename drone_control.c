@@ -5,31 +5,28 @@ PID_CONFIG rollPIDConfig;
 PID_CONFIG pitchPIDConfig;
 PID_CONFIG heightPIDConfig;
 
-const float k = 5000;
+const float k = 2900;
 bool usingManualThrust = false;
 float currentManualThrust = 0;
 
 void DRONE_CTRL_INITIALIZE(){
-    yawPIDConfig.p = 0.05;
+    yawPIDConfig.p = 0.0; // 0.009
     yawPIDConfig.i = 0.0;
-    yawPIDConfig.d = 0.0;
-    yawPIDConfig.clampled = true;
-    yawPIDConfig.min = -1.0;
-    yawPIDConfig.max = 1.0;
+    yawPIDConfig.d = 0.0; // 0.03
+    yawPIDConfig.clampled = false;
 
-    rollPIDConfig.p = 0.2;
+
+    rollPIDConfig.p = 0.04; // 0.02
     rollPIDConfig.i = 0.0;
-    rollPIDConfig.d = 5.0;
-    rollPIDConfig.clampled = true;
-    rollPIDConfig.min = -1.0;
-    rollPIDConfig.max = 1.0;
+    rollPIDConfig.d = 0.05; // 0.05
+    rollPIDConfig.clampled = false;
 
-    pitchPIDConfig.p = 0.2;
+
+    pitchPIDConfig.p = 0.04;
     pitchPIDConfig.i = 0.0;
-    pitchPIDConfig.d = 5.0;
-    pitchPIDConfig.clampled = true;
-    pitchPIDConfig.min = -1.0;
-    pitchPIDConfig.max = 1.0;
+    pitchPIDConfig.d = 0.05;
+    pitchPIDConfig.clampled = false;
+
 
     heightPIDConfig.p = 2.5;
     heightPIDConfig.i = 0.0;
