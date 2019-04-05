@@ -14,29 +14,29 @@ void DRONE_CTRL_INITIALIZE(){
     yawPIDConfig.i = 0.0;
     yawPIDConfig.d = 0.0;
     yawPIDConfig.clampled = true;
-    yawPIDConfig.min = -1.0;
-    yawPIDConfig.max = 1.0;
+    yawPIDConfig.min = -1.0f;
+    yawPIDConfig.max = 1.0f;
 
     rollPIDConfig.p = 0.2;
     rollPIDConfig.i = 0.0;
     rollPIDConfig.d = 5.0;
     rollPIDConfig.clampled = true;
-    rollPIDConfig.min = -1.0;
-    rollPIDConfig.max = 1.0;
+    rollPIDConfig.min = -1.0f;
+    rollPIDConfig.max = 1.0f;
 
     pitchPIDConfig.p = 0.2;
     pitchPIDConfig.i = 0.0;
     pitchPIDConfig.d = 5.0;
     pitchPIDConfig.clampled = true;
-    pitchPIDConfig.min = -1.0;
-    pitchPIDConfig.max = 1.0;
+    pitchPIDConfig.min = -1.0f;
+    pitchPIDConfig.max = 1.0f;
 
     heightPIDConfig.p = 2.5;
     heightPIDConfig.i = 0.0;
     heightPIDConfig.d = 20.0;
     heightPIDConfig.clampled = true;
-    heightPIDConfig.min = 0.0;
-    heightPIDConfig.max = 1.0;
+    heightPIDConfig.min = 0.0f;
+    heightPIDConfig.max = 1.0f;
 
     YAW_PID_START(yawPIDConfig);
     ROLL_PID_START(rollPIDConfig);
@@ -93,10 +93,10 @@ DRONE_CTRL_MOTOR_OUTPUT DRONE_CTRL_GET_MOTOR_OUTPUT(){
 
     DRONE_CTRL_MOTOR_OUTPUT motorOutput;
 
-    motorOutput.bottomLeft = yawRate * k - pitchRate * k - rollRate * k + thrust * k;
-    motorOutput.bottomRight = (yawRate * k + pitchRate * k - rollRate * k - thrust * k) * -1;
-    motorOutput.topLeft = (yawRate * k - pitchRate * k + rollRate * k - thrust * k) * -1;
-    motorOutput.topRight = yawRate * k + pitchRate * k + rollRate * k + thrust * k;
+    motorOutput.bottomLeft = thrust * k - pitchRate * k + rollRate * k - yawRate  * k;
+    motorOutput.bottomRight = thrust * k - pitchRate * k - rollRate * k + yawRate * k;
+    motorOutput.topLeft =  thrust * k + pitchRate * k + rollRate * k + yawRate * k;
+    motorOutput.topRight = thrust * k + pitchRate * k - rollRate * k - yawRate * k;
     
     motorOutput.bottomLeft = motorOutput.bottomLeft >= 0 ? motorOutput.bottomLeft : 0;
     motorOutput.bottomRight = motorOutput.bottomRight >= 0 ? motorOutput.bottomRight : 0;
