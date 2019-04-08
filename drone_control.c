@@ -5,7 +5,9 @@ PID_CONFIG rollPIDConfig;
 PID_CONFIG pitchPIDConfig;
 PID_CONFIG heightPIDConfig;
 
-const float k = 2900;
+float k = 2900;
+const float MAX_K = 5000;
+
 bool usingManualThrust = false;
 float currentManualThrust = 0;
 
@@ -18,23 +20,23 @@ void DRONE_CTRL_INITIALIZE(){
     yawPIDConfig.max = 1.0f;
 
 
-    rollPIDConfig.p = 0.04; // 0.02
+    rollPIDConfig.p = 0.0; // 0.02
     rollPIDConfig.i = 0.0;
-    rollPIDConfig.d = 5.0;
+    rollPIDConfig.d = 0.0;
     rollPIDConfig.clampled = true;
     rollPIDConfig.min = -1.0f;
     rollPIDConfig.max = 1.0f;
 
-    pitchPIDConfig.p = 0.04;
+    pitchPIDConfig.p = 0.0;
     pitchPIDConfig.i = 0.0;
-    pitchPIDConfig.d = 5.0;
+    pitchPIDConfig.d = 0.0;
     pitchPIDConfig.clampled = true;
     pitchPIDConfig.min = -1.0f;
     pitchPIDConfig.max = 1.0f;
 
-    heightPIDConfig.p = 2.5;
+    heightPIDConfig.p = 0.0;
     heightPIDConfig.i = 0.0;
-    heightPIDConfig.d = 20.0;
+    heightPIDConfig.d = 0.0;
     heightPIDConfig.clampled = true;
     heightPIDConfig.min = 0.0f;
     heightPIDConfig.max = 1.0f;
@@ -112,4 +114,53 @@ DRONE_CTRL_MOTOR_OUTPUT DRONE_CTRL_GET_MOTOR_OUTPUT(){
     return motorOutput;
 }
 
+void DRONE_CTRL_SET_YAW_PID(PID_CONFIG yawPIDConfigUpdate){
+    yawPIDConfig = yawPIDConfigUpdate;
+    YAW_PID_START(yawPIDConfig);
+}
 
+PID_CONFIG DRONE_CTRL_GET_YAW_PID(){
+    return yawPIDConfig;
+}
+
+void DRONE_CTRL_SET_PITCH_PID(PID_CONFIG pitchPIDConfigUpdate){
+    pitchPIDConfig = pitchPIDConfigUpdate;
+    PITCH_PID_START(pitchPIDConfig);
+}
+
+PID_CONFIG DRONE_CTRL_GET_PITCH_PID(){
+    return pitchPIDConfig;
+}
+
+void DRONE_CTRL_SET_ROLL_PID(PID_CONFIG rollPIDConfigUpdate){
+    rollPIDConfig = rollPIDConfigUpdate;
+    ROLL_PID_START(rollPIDConfig);
+}
+
+PID_CONFIG DRONE_CTRL_GET_ROLL_PID(){
+    return rollPIDConfig;
+}
+
+void DRONE_CTRL_SET_HEIGHT_PID(PID_CONFIG heightPIDConfigUpdate){
+    heightPIDConfig = heightPIDConfigUpdate;
+    HEIGHT_PID_START(heightPIDConfig);
+}
+
+PID_CONFIG DRONE_CTRL_GET_HEIGHT_PID(){
+    return heightPIDConfig;
+}
+
+void DRONE_CTRL_SET_K(float newK){
+    k = newK;
+    if(k > MAX_K){
+        k = MAX_K;
+    }
+    
+    if(k < 0){
+        k = 0;
+    }
+}
+
+float DRONE_CTRL_GET_K(){
+    return k;
+}
