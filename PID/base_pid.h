@@ -2,6 +2,7 @@
 #define _BASE_PID_H
 #include <stdbool.h>
 #include <math.h>
+#include "pid_config.h"
 
 typedef struct {
     float error;
@@ -9,14 +10,7 @@ typedef struct {
     float errorChange;
 }PID_STATUS;
 
-typedef struct {
-    float p;
-    float i;
-    float d;
-    bool clampled;
-    float max;
-    float min;
-}PID_CONFIG;
+
 
 float BASE_PID_GET_OUTPUT(PID_STATUS status, PID_CONFIG config);
 
