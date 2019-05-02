@@ -9,7 +9,7 @@
 
 void DRONE_CTRL_INITIALIZE();
 
-void DRONE_CTRL_UPDATE(DRONE_POSE newPose);
+void DRONE_CTRL_UPDATE(DRONE_POSE newPose, float time);
 
 void DRONE_CTRL_SET_TARGET_YAW(float yaw);
 

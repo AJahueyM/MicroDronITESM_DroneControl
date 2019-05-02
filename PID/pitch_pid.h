@@ -6,7 +6,9 @@ void PITCH_PID_START(PID_CONFIG config);
 
 void PITCH_PID_SETPOINT(float setpoint);
 
-void PITCH_PID_UPDATE(float source);
+void PITCH_PID_UPDATE(float source, float time);
+
+void PITCH_PID_UPDATE_CONFIG(PID_CONFIG config);
 
 float PITCH_PID_GET_OUTPUT();
 

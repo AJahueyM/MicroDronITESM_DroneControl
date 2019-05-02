@@ -6,30 +6,38 @@ PID_STATUS heightPIDStatus;
 float heightPIDErrorIntegral;
 float heightPIDLastError;
 float heightPIDTarget;
+float lastTimeUpdate;
 
 void HEIGHT_PID_START(PID_CONFIG config){
     heightPIDConfig = config;
-    heightPIDStatus.error = 0;
-    heightPIDStatus.errorIntegral = 0;
-    heightPIDStatus.errorChange = 0;
-    heightPIDLastError = 0;
-    heightPIDErrorIntegral = 0;
-    heightPIDTarget = 0;
+    heightPIDStatus.error = 0.0f;
+    heightPIDStatus.errorIntegral = 0.0f;
+    heightPIDStatus.errorChange = 0.0f;
+    heightPIDLastError = 0.0f;
+    heightPIDErrorIntegral = 0.0f;
+    heightPIDTarget = 0.0f;
+    lastTimeUpdate = 0.0f;
 }
 
 void HEIGHT_PID_SETPOINT(float setpoint){
     heightPIDTarget = setpoint;
 }
 
-void HEIGHT_PID_UPDATE(float source) {
+void HEIGHT_PID_UPDATE(float source, float time) {
+    float timeStep = time - lastTimeUpdate;
     float error = heightPIDTarget - source;
     heightPIDErrorIntegral += error;
-    float derivativeError = error - heightPIDLastError;
+    float derivativeError = (error - heightPIDLastError);
     heightPIDStatus.error = error;
     heightPIDStatus.errorChange = derivativeError;
     heightPIDStatus.errorIntegral = heightPIDErrorIntegral;
 
     heightPIDLastError = error;
+    lastTimeUpdate = time;
+}
+
+void HEIGHT_PID_UPDATE_CONFIG(PID_CONFIG config){
+        heightPIDConfig = config;
 }
 
 float HEIGHT_PID_GET_OUTPUT(){

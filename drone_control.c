@@ -15,31 +15,26 @@ void DRONE_CTRL_INITIALIZE(){
     yawPIDConfig.p = 0.0; // 0.009
     yawPIDConfig.i = 0.0;
     yawPIDConfig.d = 0.0;
-    yawPIDConfig.clampled = true;
-    yawPIDConfig.min = -1.0f;
-    yawPIDConfig.max = 1.0f;
+    yawPIDConfig.clampled = false;
 
 
     rollPIDConfig.p = 0.0; // 0.02
     rollPIDConfig.i = 0.0;
     rollPIDConfig.d = 0.0;
-    rollPIDConfig.clampled = true;
-    rollPIDConfig.min = -1.0f;
-    rollPIDConfig.max = 1.0f;
+    rollPIDConfig.clampled = false;
+
 
     pitchPIDConfig.p = 0.0;
     pitchPIDConfig.i = 0.0;
     pitchPIDConfig.d = 0.0;
-    pitchPIDConfig.clampled = true;
-    pitchPIDConfig.min = -1.0f;
-    pitchPIDConfig.max = 1.0f;
+    pitchPIDConfig.clampled = false;
+
 
     heightPIDConfig.p = 0.0;
     heightPIDConfig.i = 0.0;
     heightPIDConfig.d = 0.0;
-    heightPIDConfig.clampled = true;
-    heightPIDConfig.min = 0.0f;
-    heightPIDConfig.max = 1.0f;
+    heightPIDConfig.clampled = false;
+
 
     YAW_PID_START(yawPIDConfig);
     ROLL_PID_START(rollPIDConfig);
@@ -52,11 +47,11 @@ void DRONE_CTRL_INITIALIZE(){
     HEIGHT_PID_SETPOINT(0.0);
 }
 
-void DRONE_CTRL_UPDATE(DRONE_POSE newPose){
-    YAW_PID_UPDATE(newPose.yaw);
-    ROLL_PID_UPDATE(newPose.roll);
-    PITCH_PID_UPDATE(newPose.pitch);
-    HEIGHT_PID_UPDATE(newPose.height);
+void DRONE_CTRL_UPDATE(DRONE_POSE newPose, float time){
+    YAW_PID_UPDATE(newPose.yaw, time);
+    ROLL_PID_UPDATE(newPose.roll, time);
+    PITCH_PID_UPDATE(newPose.pitch, time);
+    HEIGHT_PID_UPDATE(newPose.zAccel, time);
 }
 
 void DRONE_CTRL_SET_TARGET_YAW(float yaw){
@@ -96,15 +91,15 @@ DRONE_CTRL_MOTOR_OUTPUT DRONE_CTRL_GET_MOTOR_OUTPUT(){
 
     DRONE_CTRL_MOTOR_OUTPUT motorOutput;
 
-    motorOutput.bottomLeft = thrust * k - pitchRate * k + rollRate * k - yawRate  * k;
-    motorOutput.bottomRight = thrust * k - pitchRate * k - rollRate * k + yawRate * k;
-    motorOutput.topLeft =  thrust * k + pitchRate * k + rollRate * k + yawRate * k;
-    motorOutput.topRight = thrust * k + pitchRate * k - rollRate * k - yawRate * k;
+    motorOutput.bottomLeft = (thrust - pitchRate + rollRate - yawRate) * k;
+    motorOutput.bottomRight = (thrust - pitchRate - rollRate + yawRate) * k;
+    motorOutput.topLeft =  (thrust + pitchRate + rollRate + yawRate) * k;
+    motorOutput.topRight = (thrust + pitchRate - rollRate - yawRate) * k;
     
-    motorOutput.bottomLeft = motorOutput.bottomLeft >= 0 ? motorOutput.bottomLeft : 0;
-    motorOutput.bottomRight = motorOutput.bottomRight >= 0 ? motorOutput.bottomRight : 0;
-    motorOutput.topLeft = motorOutput.topLeft >= 0 ? motorOutput.topLeft : 0;
-    motorOutput.topRight = motorOutput.topRight >= 0 ? motorOutput.topRight : 0;
+    motorOutput.bottomLeft = motorOutput.bottomLeft > 0 ? motorOutput.bottomLeft : 0;
+    motorOutput.bottomRight = motorOutput.bottomRight > 0 ? motorOutput.bottomRight : 0;
+    motorOutput.topLeft = motorOutput.topLeft > 0 ? motorOutput.topLeft : 0;
+    motorOutput.topRight = motorOutput.topRight > 0 ? motorOutput.topRight : 0;
 
     motorOutput.bottomLeft = motorOutput.bottomLeft > k ? k : motorOutput.bottomLeft;
     motorOutput.bottomRight = motorOutput.bottomRight > k ? k : motorOutput.bottomRight;
@@ -116,7 +111,7 @@ DRONE_CTRL_MOTOR_OUTPUT DRONE_CTRL_GET_MOTOR_OUTPUT(){
 
 void DRONE_CTRL_SET_YAW_PID(PID_CONFIG yawPIDConfigUpdate){
     yawPIDConfig = yawPIDConfigUpdate;
-    YAW_PID_START(yawPIDConfig);
+    YAW_PID_UPDATE_CONFIG(yawPIDConfig);
 }
 
 PID_CONFIG DRONE_CTRL_GET_YAW_PID(){
@@ -125,7 +120,7 @@ PID_CONFIG DRONE_CTRL_GET_YAW_PID(){
 
 void DRONE_CTRL_SET_PITCH_PID(PID_CONFIG pitchPIDConfigUpdate){
     pitchPIDConfig = pitchPIDConfigUpdate;
-    PITCH_PID_START(pitchPIDConfig);
+    PITCH_PID_UPDATE_CONFIG(pitchPIDConfig);
 }
 
 PID_CONFIG DRONE_CTRL_GET_PITCH_PID(){
@@ -134,7 +129,7 @@ PID_CONFIG DRONE_CTRL_GET_PITCH_PID(){
 
 void DRONE_CTRL_SET_ROLL_PID(PID_CONFIG rollPIDConfigUpdate){
     rollPIDConfig = rollPIDConfigUpdate;
-    ROLL_PID_START(rollPIDConfig);
+    ROLL_PID_UPDATE_CONFIG(rollPIDConfig);
 }
 
 PID_CONFIG DRONE_CTRL_GET_ROLL_PID(){
@@ -143,7 +138,7 @@ PID_CONFIG DRONE_CTRL_GET_ROLL_PID(){
 
 void DRONE_CTRL_SET_HEIGHT_PID(PID_CONFIG heightPIDConfigUpdate){
     heightPIDConfig = heightPIDConfigUpdate;
-    HEIGHT_PID_START(heightPIDConfig);
+    HEIGHT_PID_UPDATE_CONFIG(heightPIDConfig);
 }
 
 PID_CONFIG DRONE_CTRL_GET_HEIGHT_PID(){

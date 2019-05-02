@@ -5,7 +5,7 @@ typedef struct {
 	float yaw;
 	float pitch;
 	float roll;
-	float height;
+	float zAccel;
 } DRONE_POSE;
 
 #endif
