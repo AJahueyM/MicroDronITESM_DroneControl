@@ -12,21 +12,21 @@ bool usingManualThrust = false;
 float currentManualThrust = 0;
 
 void DRONE_CTRL_INITIALIZE(){
-    yawPIDConfig.p = 0.0; // 0.009
+    yawPIDConfig.p = 0.02;
     yawPIDConfig.i = 0.0;
-    yawPIDConfig.d = 0.0;
+    yawPIDConfig.d = 0.5;
     yawPIDConfig.clampled = false;
 
 
-    rollPIDConfig.p = 0.0; // 0.02
+    rollPIDConfig.p = 0.0002;
     rollPIDConfig.i = 0.0;
-    rollPIDConfig.d = 0.0;
+    rollPIDConfig.d = 0.11;
     rollPIDConfig.clampled = false;
 
 
-    pitchPIDConfig.p = 0.0;
+    pitchPIDConfig.p = 0.0002;
     pitchPIDConfig.i = 0.0;
-    pitchPIDConfig.d = 0.0;
+    pitchPIDConfig.d = 0.11;
     pitchPIDConfig.clampled = false;
 
 
