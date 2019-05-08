@@ -15,7 +15,9 @@ void DRONE_CTRL_INITIALIZE(){
     yawPIDConfig.p = 0.02;
     yawPIDConfig.i = 0.0;
     yawPIDConfig.d = 0.5;
-    yawPIDConfig.clampled = false;
+    yawPIDConfig.clampled = true;
+    yawPIDConfig.max =  1.0;
+    yawPIDConfig.min = 0.0;
 
 
     rollPIDConfig.p = 0.002;
