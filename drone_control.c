@@ -14,21 +14,21 @@ float currentManualThrust = 0;
 void DRONE_CTRL_INITIALIZE(){
     yawPIDConfig.p = 0.02;
     yawPIDConfig.i = 0.0;
-    yawPIDConfig.d = 0.5;
+    yawPIDConfig.d = 1.0;
     yawPIDConfig.clampled = true;
-    yawPIDConfig.max =  1.0;
-    yawPIDConfig.min = 0.0;
+    yawPIDConfig.max =  0.4;
+    yawPIDConfig.min = -0.4;
 
 
     rollPIDConfig.p = 0.002;
     rollPIDConfig.i = 0.0;
-    rollPIDConfig.d = 0.13;
+    rollPIDConfig.d = 0.12;
     rollPIDConfig.clampled = false;
 
 
     pitchPIDConfig.p = 0.002;
     pitchPIDConfig.i = 0.0;
-    pitchPIDConfig.d = 0.13;
+    pitchPIDConfig.d = 0.12;
     pitchPIDConfig.clampled = false;
 
 
