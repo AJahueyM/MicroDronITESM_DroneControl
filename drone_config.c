@@ -1,4 +1,5 @@
 #include "drone_config.h"
+
 const double DRONE_MASS = 0.06; // Kilograms
 const double GRAVITY = -9.8; // m / s^2
 const double DRONE_ARM_LENGTH = 0.058; // Meters
@@ -11,7 +12,6 @@ const double DRONE_IZZ = 0.00007317; // Inertia ZZ, kgm^2
 const double DRONE_PERCENT_PER_ANGULAR = 0.066; //PWM output percent per rad/s
 const double DRONE_PERCENT_TO_ANGULAR_OFFSET = -58.8; //Offset for conversion between rad/s and PWM output percent
 
-
 double DRONE_CONFIG_GET_PWMOUT_FROM_ANGULAR(double angularSpeed){
     return angularSpeed * DRONE_PERCENT_PER_ANGULAR + DRONE_PERCENT_TO_ANGULAR_OFFSET;
 }
@@ -21,13 +21,13 @@ double DRONE_CONFIG_GET_ANGULAR_FROM_PWMOUT(double pwmOut){
 }
 
 double DRONE_CONFIG_GET_THRUST_FROM_ANGULAR(double angularSpeed){
-    return DRONE_KT * pow(angularSpeed, 2);
+    return DRONE_KT * powf(angularSpeed, 2);
 }
 
 double DRONE_CONFIG_GET_ANGULAR_FROM_THRUST(double thrust){
-    return  sqrt(thrust / DRONE_KT);
+    return  sqrtf(thrust / DRONE_KT);
 }
 
 double DRONE_GET_THRUST_FOR_HOVER(DRONE_POSE pose){
-    return (-GRAVITY * DRONE_MASS)/(cos(pose.roll) * sin(pose.pitch));
+    return (-GRAVITY * DRONE_MASS)/(cosf(pose.roll) * sinf(pose.pitch));
 }
