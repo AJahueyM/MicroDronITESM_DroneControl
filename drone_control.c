@@ -3,15 +3,24 @@
 PID_CONFIG yawPIDConfig;
 PID_CONFIG rollPIDConfig;
 PID_CONFIG pitchPIDConfig;
-PID_CONFIG heightPIDConfig;
 
 float k = 5000;
 const float MAX_K = 5000;
 
+const float MAX_OFFSET_THRUST = 0.2;
+const float MIN_OFFSET_THRUST = -0.2;
+
 bool usingManualThrust = false;
 float currentManualThrust = 0;
+float currentOffsetThrust = 0;
+DRONE_POSE lastReceivedPose;
 
 void DRONE_CTRL_INITIALIZE(){
+    lastReceivedPose.pitch = 0;
+    lastReceivedPose.roll = 0;
+    lastReceivedPose.yaw = 0;
+    lastReceivedPose.thrust = 0;
+
     yawPIDConfig.p = 0.02;
     yawPIDConfig.i = 0.0;
     yawPIDConfig.d = 0.5;
@@ -29,29 +38,20 @@ void DRONE_CTRL_INITIALIZE(){
     pitchPIDConfig.d = 0.13;
     pitchPIDConfig.clampled = false;
 
-
-    heightPIDConfig.p = 0.0;
-    heightPIDConfig.i = 0.0;
-    heightPIDConfig.d = 0.0;
-    heightPIDConfig.clampled = false;
-
-
     YAW_PID_START(yawPIDConfig);
     ROLL_PID_START(rollPIDConfig);
     PITCH_PID_START(pitchPIDConfig);
-    HEIGHT_PID_START(heightPIDConfig);
 
     YAW_PID_SETPOINT(0.0);
     ROLL_PID_SETPOINT(0.0);
     PITCH_PID_SETPOINT(0.0);
-    HEIGHT_PID_SETPOINT(0.0);
 }
 
 void DRONE_CTRL_UPDATE(DRONE_POSE newPose, float time){
     YAW_PID_UPDATE(newPose.yaw, time);
     ROLL_PID_UPDATE(newPose.roll, time);
     PITCH_PID_UPDATE(newPose.pitch, time);
-    HEIGHT_PID_UPDATE(newPose.zAccel, time);
+    lastReceivedPose = newPose;
 }
 
 void DRONE_CTRL_SET_TARGET_YAW(float yaw){
@@ -66,10 +66,6 @@ void DRONE_CTRL_SET_TARGET_PITCH(float pitch){
     PITCH_PID_SETPOINT(pitch);
 }
 
-void DRONE_CTRL_SET_TARGET_HEIGHT(float height){
-    HEIGHT_PID_SETPOINT(height);
-}
-
 void DRONE_CTRL_USE_MANUAL_THRUST(bool manualThrust){
     usingManualThrust = manualThrust;
 }
@@ -82,12 +78,26 @@ bool DRONE_CTRL_USING_MANUAL_THRUST(){
     return usingManualThrust;
 }
 
+void DRONE_CTRL_SET_OFFSET_THRUST(float offsetThrust){
+    if(offsetThrust > MAX_OFFSET_THRUST){
+        offsetThrust = MAX_OFFSET_THRUST;
+    }else if(offsetThrust < MIN_OFFSET_THRUST){
+        offsetThrust = MIN_OFFSET_THRUST;
+    }
+
+    currentOffsetThrust = offsetThrust;
+}
+
 DRONE_CTRL_MOTOR_OUTPUT DRONE_CTRL_GET_MOTOR_OUTPUT(){
     float yawRate = YAW_PID_GET_OUTPUT();
     float rollRate = ROLL_PID_GET_OUTPUT();
     float pitchRate = PITCH_PID_GET_OUTPUT();
-    
-    float thrust = usingManualThrust ? currentManualThrust : HEIGHT_PID_GET_OUTPUT();
+    float thrustForHover = DRONE_GET_THRUST_FOR_HOVER(lastReceivedPose);
+    float individualAngularForHover = DRONE_CONFIG_GET_ANGULAR_FROM_THRUST(thrustForHover / 4.0);
+    float individualPWMOutForHover = DRONE_CONFIG_GET_PWMOUT_FROM_ANGULAR(individualAngularForHover) / 100.0;
+    float thrustWithOffset = individualPWMOutForHover + currentOffsetThrust;
+
+    float thrust = usingManualThrust ? currentManualThrust : thrustWithOffset;
 
     DRONE_CTRL_MOTOR_OUTPUT motorOutput;
 
@@ -136,14 +146,6 @@ PID_CONFIG DRONE_CTRL_GET_ROLL_PID(){
     return rollPIDConfig;
 }
 
-void DRONE_CTRL_SET_HEIGHT_PID(PID_CONFIG heightPIDConfigUpdate){
-    heightPIDConfig = heightPIDConfigUpdate;
-    HEIGHT_PID_UPDATE_CONFIG(heightPIDConfig);
-}
-
-PID_CONFIG DRONE_CTRL_GET_HEIGHT_PID(){
-    return heightPIDConfig;
-}
 
 void DRONE_CTRL_SET_K(float newK){
     k = newK;

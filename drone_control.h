@@ -4,8 +4,10 @@
 #include "PID/roll_pid.h"
 #include "PID/pitch_pid.h"
 #include "PID/height_pid.h"
+#include "drone_config.h"
 #include "drone_pose.h"
 #include "drone_motor_output.h"
+
 
 /**
  * Control logic for a drone, uses the X configuration
@@ -70,6 +72,12 @@ void DRONE_CTRL_SET_MANUAL_THRUST(float thrust);
  * @return
  */
 bool DRONE_CTRL_USING_MANUAL_THRUST();
+
+/**
+ * Update current offset thrust if it is being used
+ * @param offsetThrust
+ */
+void DRONE_CTRL_SET_OFFSET_THRUST(float offsetThrust);
 
 /**
  * Retrieve the current motor output after it is updated by DRONE_CTRL_UPDATE
