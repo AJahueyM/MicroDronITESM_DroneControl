@@ -1,5 +1,6 @@
 #ifndef _PID_CONFIG_H
 #define _PID_CONFIG_H
+#include <stdbool.h>
 
 /**
  * Simple PID configuration
