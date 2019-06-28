@@ -114,10 +114,10 @@ DRONE_CTRL_MOTOR_OUTPUT DRONE_CTRL_GET_MOTOR_OUTPUT(){
     motorOutput.topLeft = motorOutput.topLeft > 0 ? motorOutput.topLeft : 0;
     motorOutput.topRight = motorOutput.topRight > 0 ? motorOutput.topRight : 0;
 
-    motorOutput.bottomLeft = motorOutput.bottomLeft > k ? k : motorOutput.bottomLeft;
-    motorOutput.bottomRight = motorOutput.bottomRight > k ? k : motorOutput.bottomRight;
-    motorOutput.topLeft = motorOutput.topLeft > k ? k : motorOutput.topLeft;
-    motorOutput.topRight = motorOutput.topRight > k ? k : motorOutput.topRight;
+    motorOutput.bottomLeft = motorOutput.bottomLeft > MAX_K ? MAX_K : motorOutput.bottomLeft;
+    motorOutput.bottomRight = motorOutput.bottomRight > MAX_K ? MAX_K : motorOutput.bottomRight;
+    motorOutput.topLeft = motorOutput.topLeft > MAX_K ? MAX_K : motorOutput.topLeft;
+    motorOutput.topRight = motorOutput.topRight > MAX_K ? MAX_K : motorOutput.topRight;
     
     return motorOutput;
 }
