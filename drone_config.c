@@ -29,5 +29,5 @@ double DRONE_CONFIG_GET_ANGULAR_FROM_THRUST(double thrust){
 }
 
 double DRONE_GET_THRUST_FOR_HOVER(DRONE_POSE pose){
-    return (-GRAVITY * DRONE_MASS)/(cosf(pose.roll) * cosf(pose.pitch));
+    return (-GRAVITY * DRONE_MASS)/(cosf(pose.roll * M_PI / 180.0) * cosf(pose.pitch * M_PI / 180.0));
 }
