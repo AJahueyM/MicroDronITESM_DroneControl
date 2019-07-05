@@ -26,6 +26,18 @@ void ROLL_PID_SETPOINT(float setpoint){
 void ROLL_PID_UPDATE(float source, float time) {
     float timeStep = time - lastTimeUpdate;
     float error = rollPIDTarget - source;
+
+    if(rollPIDConfig.continuous){
+        double maxError = (rollPIDConfig.maxInput - rollPIDConfig.minInput) / 2.0;
+
+        if(error > maxError){
+            error -= rollPIDConfig.maxInput - rollPIDConfig.minInput;
+        }
+        if(error < -maxError){
+            error += rollPIDConfig.maxInput - rollPIDConfig.minInput;
+        }
+    }
+
     rollPIDErrorIntegral += error;
     float derivativeError = (error - rollPIDLastError);
     rollPIDStatus.error = error;

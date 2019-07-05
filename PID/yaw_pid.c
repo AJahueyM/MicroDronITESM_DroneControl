@@ -26,6 +26,19 @@ void YAW_PID_UPDATE(float source, float time) {
     float timeStep = time - lastTimeUpdate;
     
     float error = yawPIDTarget - source;
+
+    if(yawPIDConfig.continuous){
+        double maxError = (yawPIDConfig.maxInput - yawPIDConfig.minInput) / 2.0;
+
+        if(error > maxError){
+            error -= yawPIDConfig.maxInput - yawPIDConfig.minInput;
+        }
+        if(error < -maxError){
+            error += yawPIDConfig.maxInput - yawPIDConfig.minInput;
+        }
+    }
+
+
     yawPIDErrorIntegral += error;
     float derivativeError = (error - yawPIDLastError);
     yawPIDStatus.error = error;

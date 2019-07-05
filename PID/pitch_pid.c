@@ -25,6 +25,17 @@ void PITCH_PID_SETPOINT(float setpoint){
 void PITCH_PID_UPDATE(float source, float time) {
     float timeStep = time - lastTimeUpdate;
     float error = pitchPIDTarget - source;
+
+    if(pitchPIDConfig.continuous){
+        double maxError = (pitchPIDConfig.maxInput - pitchPIDConfig.minInput) / 2.0;
+
+        if(error > maxError){
+            error -= pitchPIDConfig.maxInput - pitchPIDConfig.minInput;
+        }
+        if(error < -maxError){
+            error += pitchPIDConfig.maxInput - pitchPIDConfig.minInput;
+        }
+    }
     pitchPIDErrorIntegral += error;
     float derivativeError = (error - pitchPIDLastError);
     pitchPIDStatus.error = error;

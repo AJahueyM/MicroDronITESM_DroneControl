@@ -26,6 +26,18 @@ void HEIGHT_PID_SETPOINT(float setpoint){
 void HEIGHT_PID_UPDATE(float source, float time) {
     float timeStep = time - lastTimeUpdate;
     float error = heightPIDTarget - source;
+
+    if(heightPIDConfig.continuous){
+        double maxError = (heightPIDConfig.maxInput - heightPIDConfig.minInput) / 2.0;
+
+        if(error > maxError){
+            error -= heightPIDConfig.maxInput - heightPIDConfig.minInput;
+        }
+        if(error < -maxError){
+            error += heightPIDConfig.maxInput - heightPIDConfig.minInput;
+        }
+    }
+
     heightPIDErrorIntegral += error;
     float derivativeError = (error - heightPIDLastError);
     heightPIDStatus.error = error;

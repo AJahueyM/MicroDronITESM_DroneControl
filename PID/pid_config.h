@@ -9,9 +9,12 @@ typedef struct {
     float p;
     float i;
     float d;
-    bool clampled;
-    float max;
-    float min;
+    bool clamped;
+    float maxOutput;
+    float minOutput;
+    bool continuous;
+    float maxInput;
+    float minInput;
 }PID_CONFIG;
 
 #endif

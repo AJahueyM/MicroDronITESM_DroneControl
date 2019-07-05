@@ -24,22 +24,30 @@ void DRONE_CTRL_INITIALIZE(){
 
     yawPIDConfig.p = 0.02;
     yawPIDConfig.i = 0.0;
-    yawPIDConfig.d = 0.3;
-    yawPIDConfig.clampled = true;
-    yawPIDConfig.max =  0.2;
-    yawPIDConfig.min = -0.2;
+    yawPIDConfig.d = 0.7;
+    yawPIDConfig.clamped = true;
+    yawPIDConfig.maxOutput =  0.2;
+    yawPIDConfig.minOutput = -0.2;
+    yawPIDConfig.continuous = true;
+    yawPIDConfig.maxInput =  180;
+    yawPIDConfig.minInput = -180;
 
-
-    rollPIDConfig.p = 0.002;
+    rollPIDConfig.p = 0.0045;
     rollPIDConfig.i = 0.0;
-    rollPIDConfig.d = 0.04;
-    rollPIDConfig.clampled = false;
+    rollPIDConfig.d = 0.14;
+    rollPIDConfig.clamped= false;
+    rollPIDConfig.continuous = true;
+    rollPIDConfig.maxInput =  180;
+    rollPIDConfig.minInput = -180;
 
 
-    pitchPIDConfig.p = 0.002;
+    pitchPIDConfig.p = 0.0045;
     pitchPIDConfig.i = 0.0;
-    pitchPIDConfig.d = 0.04;
-    pitchPIDConfig.clampled = false;
+    pitchPIDConfig.d = 0.14;
+    pitchPIDConfig.clamped = false;
+    pitchPIDConfig.continuous = true;
+    pitchPIDConfig.maxInput =  180;
+    pitchPIDConfig.minInput = -180;
 
     YAW_PID_START(yawPIDConfig);
     ROLL_PID_START(rollPIDConfig);
@@ -98,7 +106,7 @@ DRONE_CTRL_MOTOR_OUTPUT DRONE_CTRL_GET_MOTOR_OUTPUT(){
     float thrustForHover = DRONE_GET_THRUST_FOR_HOVER(lastReceivedPose);
     float individualAngularForHover = DRONE_CONFIG_GET_ANGULAR_FROM_THRUST(thrustForHover / 4.0);
     float individualPWMOutForHover = DRONE_CONFIG_GET_PWMOUT_FROM_ANGULAR(individualAngularForHover) / 100.0;
-    float thrustWithOffset = 0.0 + currentOffsetThrust;
+    float thrustWithOffset = individualPWMOutForHover + currentOffsetThrust;
 
     float thrust = usingManualThrust ? currentManualThrust : thrustWithOffset;
 
